@@ -2,7 +2,7 @@ package main
 
 import (
 	"eco-sort/backend/config"
-	"eco-sort/backend/db"
+	"eco-sort/backend/repository"
 	"eco-sort/backend/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -15,12 +15,12 @@ func main() {
 	app := fiber.New()
 	app.Use(cors.New())
 
-	err := db.Connect()
+	err := repository.Connect()
 	if err != nil {
-		log.Fatalf("failed to connect to db: %v", err)
+		log.Fatalf("failed to connect to repository: %v", err)
 	}
 
-	defer db.Close()
+	defer repository.Close()
 
 	router.SetupRoutes(app)
 	log.Fatal(app.Listen(":3000"))

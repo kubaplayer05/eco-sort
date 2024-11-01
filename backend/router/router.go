@@ -6,10 +6,11 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
-
 	productRouter := app.Group("/product")
 	productRouter.Get("/", handler.GetAllProducts)
+	productRouter.Get("/category/:id", handler.GetByCategoryId)
+	productRouter.Get("/search/:name", handler.SearchProduct)
 
-	genaiRouter := app.Group("/genai")
-	genaiRouter.Get("/suggestion", handler.GetRecyclingSuggestion)
+	genAiRouter := app.Group("/genai")
+	genAiRouter.Post("/suggestion", handler.GetRecyclingSuggestion)
 }

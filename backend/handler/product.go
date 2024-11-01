@@ -1,38 +1,59 @@
 package handler
 
 import (
-	"context"
-	"eco-sort/backend/db"
 	"eco-sort/backend/model"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"log"
 )
 
 func GetAllProducts(c *fiber.Ctx) error {
-	sql := "select pr.id, pr.name, rc.name from products pr join recycle_category rc on rc.id = pr.category_id"
-	rows, err := db.Conn.Query(context.Background(), sql)
+	var product model.Product
+
+	products, err := product.GetAll()
 
 	if err != nil {
-		log.Printf("Query error: %v", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to query all products"})
-	}
-
-	defer rows.Close()
-
-	var products []model.Product
-
-	for rows.Next() {
-		var product model.Product
-		if err := rows.Scan(&product.Id, &product.Name, &product.Category); err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to scan product"})
-		}
-
-		products = append(products, product)
-	}
-
-	if err := rows.Err(); err != nil {
-		log.Printf("Rows error: %v", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
 	}
 
 	return c.JSON(products)
+}
+
+func GetByCategoryId(c *fiber.Ctx) error {
+	var product model.Product
+	id := c.Params("id")
+
+	if id == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Failed to get param string"})
+	}
+
+	products, err := product.GetByCategoryId(id)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+
+	return c.JSON(products)
+}
+
+func SearchProduct(c *fiber.Ctx) error {
+	var product model.Product
+	name := c.Params("name")
+
+	if name == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Failed to get param string"})
+	}
+
+	embedding, err := product.GetEmbeddingFromName(name)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+
+	products, err := product.SearchWithEmbedding(embedding)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+
+	return c.JSON(fiber.Map{"products": products})
 }

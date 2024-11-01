@@ -1,34 +1,28 @@
 package handler
 
 import (
-	"context"
+	"eco-sort/backend/model"
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/option"
 	"log"
-	"os"
 )
 
+type GetRecyclingSuggestionBody struct {
+	ProductName string `json:"product_name"`
+}
+
 func GetRecyclingSuggestion(c *fiber.Ctx) error {
+	var recycleSuggestion model.RecycleSuggestion
+	var body GetRecyclingSuggestionBody
 
-	prompt := "Cześć, posiadam przedmiot: długopis, który potrzebuje wyrzucić. Potrzębuje twojego wsparcia, dopasuj podany przedmiot do podanych" +
-		"poniżej rodzajów recyklingu: 1. plastic and metal, 2. glass, 3. bio, 4. paper, 5. mixed, 6.electronics and batteries, 7.medicines and chemicals, 8.clothes, 9.other. " +
-		"Dodatkowo, jeżeli dany przedmiot ma niestandardową procedurę podczas wyrzucania/recyklingu to możesz ją opisać"
-
-	client, err := genai.NewClient(context.Background(), option.WithAPIKey(os.Getenv("GOOGLE_API_KEY")))
-	if err != nil {
-		log.Fatalf("failed to create google generative ai client: %v", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to create google generative ai client"})
+	if err := c.BodyParser(&body); err != nil {
+		log.Printf("BodyParser error: %v", err)
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Failed to parse request body"})
 	}
 
-	defer client.Close()
+	resp, err := recycleSuggestion.GenerateRecycleSuggestion(body.ProductName)
 
-	model := client.GenerativeModel("gemini-1.5-flash")
-
-	resp, err := model.GenerateContent(context.Background(), genai.Text(prompt))
 	if err != nil {
-		log.Fatalf("failed to get response from generative ai: %v", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get response from generative ai"})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err})
 	}
 
 	return c.JSON(fiber.Map{"response": resp})
