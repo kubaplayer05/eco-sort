@@ -34,6 +34,9 @@ class _SharedBottomNavbarState extends State<SharedBottomNavbar> {
           case 1:
             context.go("/search");
             break;
+          case 2:
+            context.go("/recycling-assistant");
+            break;
         }
       },
       indicatorColor: Colors.lightBlue[200],

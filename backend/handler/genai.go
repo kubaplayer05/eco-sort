@@ -25,5 +25,19 @@ func GetRecyclingSuggestion(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err})
 	}
 
-	return c.JSON(fiber.Map{"response": resp})
+	recycleSuggestions, err := recycleSuggestion.ConvertRecycleSuggestionToJson(resp, body.ProductName)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err})
+	}
+
+	for _, suggestion := range recycleSuggestions {
+		err := model.Product{}.CreateFromSuggestion(suggestion)
+
+		if err != nil {
+			log.Printf("%s", err)
+		}
+	}
+
+	return c.JSON(fiber.Map{"response": recycleSuggestions})
 }

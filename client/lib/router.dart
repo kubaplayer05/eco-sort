@@ -1,4 +1,5 @@
 import 'package:client/screens/home.dart';
+import 'package:client/screens/recycling_assistant.dart';
 import 'package:client/screens/recycling_categories/bio_details.dart';
 import 'package:client/screens/recycling_categories/glass_details.dart';
 import 'package:client/screens/recycling_categories/mixed_detailes.dart';
@@ -51,5 +52,8 @@ final router = GoRouter(routes: [
       path: "/recycling-categories",
       pageBuilder: (context, state) => const Placeholder()),
   getTransitionGoRoute(
-      path: "/search", pageBuilder: (context, state) => const SearchScreen())
+      path: "/search", pageBuilder: (context, state) => const SearchScreen()),
+  getTransitionGoRoute(
+      path: "/recycling-assistant",
+      pageBuilder: (context, state) => const RecyclingAssistantScreen())
 ]);

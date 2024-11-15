@@ -18,6 +18,18 @@ func GetAllProducts(c *fiber.Ctx) error {
 	return c.JSON(products)
 }
 
+func GetNewestProducts(c *fiber.Ctx) error {
+	var product model.Product
+
+	products, err := product.GetNewestProducts()
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+
+	return c.JSON(products)
+}
+
 func GetByCategoryId(c *fiber.Ctx) error {
 	var product model.Product
 	id := c.Params("id")

@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:client/convert_to_utf_8.dart';
+
 class Product {
   final int id;
   final String name;
@@ -20,12 +24,10 @@ class Product {
       } =>
         Product(
             id: id,
-            name: name,
-            description: description,
+            name: convertToUtf8(name),
+            description: description != null ? convertToUtf8(description) : null,
             categoryName: categoryName),
       _ => throw const FormatException("Failed to format products")
     };
   }
 }
-
-

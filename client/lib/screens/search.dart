@@ -1,5 +1,6 @@
 import 'package:client/models/product.dart';
 import 'package:client/providers/product.dart';
+import 'package:client/widgets/search/product_list.dart';
 import 'package:client/widgets/shared_app_bar.dart';
 import 'package:client/widgets/shared_bottom_navbar.dart';
 import 'package:flutter/material.dart';
@@ -16,22 +17,22 @@ class SearchScreen extends ConsumerWidget {
       appBar: const SharedAppBar(),
       bottomNavigationBar: const SharedBottomNavbar(),
       body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: switch (products) {
-          AsyncData(:final value) => ListView.builder(
-              itemCount: value.length,
-              itemBuilder: (context, index) {
-                final Product product = value[index];
-                return ListTile(
-                  title: Text(product.name),
-                  subtitle: Text(product.categoryName),
-                );
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Wyszukiwarka przedmiotów i jak je recyklingować",
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              switch (products) {
+                AsyncData(:final value) => ProductList(products: value),
+                AsyncError(:final error) => Text(error.toString()),
+                _ => const CircularProgressIndicator(),
               },
-            ),
-          AsyncError(:final error) => Text(error.toString()) ,
-          _ => const CircularProgressIndicator(),
-        },
-      ),
+            ],
+          )),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:client/widgets/recycling_details_card.dart';
+import 'package:client/widgets/recycling_categories/recycling_details_card.dart';
 import 'package:client/widgets/shared_app_bar.dart';
 import 'package:flutter/material.dart';
 

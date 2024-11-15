@@ -8,6 +8,7 @@ import (
 func SetupRoutes(app *fiber.App) {
 	productRouter := app.Group("/product")
 	productRouter.Get("/", handler.GetAllProducts)
+	productRouter.Get("/newest", handler.GetNewestProducts)
 	productRouter.Get("/category/:id", handler.GetByCategoryId)
 	productRouter.Get("/search/:name", handler.SearchProduct)
 
