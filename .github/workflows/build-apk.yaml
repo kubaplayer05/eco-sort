@@ -1,127 +1,40 @@
-name: Build Flutter APKs & Appbundle
-on: push
+name: Build Flutter APK
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger workflow on pull requests targeting the main branch
 
 jobs:
-  build_documentation:
-    name: Build Documentation
+  build-apk:
+    name: Build APK
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Step 1: Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
-      - name: Install Flutter SDK
-        uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
+    # Step 2: Set up Flutter
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'
 
-      - name: Flutter pub get
-        run: flutter pub get
+    # Step 3: Install Flutter dependencies
+    - name: Install Flutter Dependencies
+      run: flutter pub get
 
-      - name: Install dartdoc
-        run: flutter pub global activate dartdoc
+    # Step 4: Run Flutter build APK
+    - name: Build APK
+      run: flutter build apk --release
 
-      - name: Generate documentation
-        run: flutter pub global run dartdoc
-
-      - name: Release the documentation
-        uses: crazy-max/ghaction-github-pages@v3
-        if: success()
-        with:
-          target_branch: documentation
-          build_dir: doc/api
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build_apks:
-    name: Build APKs
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 12
-        uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: "12.x"
-
-      - name: Initialize project version
-        id: project_version
-        uses: its404/get-flutter-version@v1.0.0
-
-      - name: Install Flutter SDK
-        uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
-
-      - name: Building APKs (Split by ABI)
-        run: flutter build apk --release --split-per-abi
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@master
-        with:
-          name: publish-artifacts
-          path: build/app/outputs/flutter-apk/*.apk
-
-  build_appbundle:
-    name: Build APPBUNDLE
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 12
-        uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: "12.x"
-
-      - name: Get project version
-        id: project_version
-        uses: its404/get-flutter-version@v1.0.0
-
-      - name: Install Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
-
-      - name: Building Appbundle
-        run: flutter build appbundle
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@master
-        with:
-          name: publish-artifacts
-          path: build/app/outputs/bundle/release/*.aab
-
-  publish:
-    name: Publish the binaries
-    needs: [build_apks, build_appbundle]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Get project version
-        id: project_version
-        uses: its404/get-flutter-version@v1.0.0
-
-      - name: Download apks
-        uses: actions/download-artifact@v2
-        with:
-          name: publish-artifacts
-          path: build/app/outputs/flutter-apk
-
-      - name: Download appbundle
-        uses: actions/download-artifact@v2
-        with:
-          name: publish-artifacts
-          path: build/app/outputs/bundle/prodRelease
-
-      - name: Release Binary
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/bundle/release/*.aab, build/app/outputs/flutter-apk/*.apk"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: v${{ steps.project_version.outputs.version_number }}+${{steps.project_version.outputs.build_number}}-${{github.run_number}}
-          name: "Release ${{ steps.project_version.outputs.version_number }}+${{steps.project_version.outputs.build_number}}"
-          generateReleaseNotes: true
+    # Step 5: Upload APK as an artifact
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
