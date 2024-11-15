@@ -36,12 +36,12 @@ jobs:
       working-directory: client
 
     # Step 5: Upload APK as an artifact
-    - name: Upload APK
-      uses: actions/upload-artifact@v3
+    - name: Create GitHub Release
+      uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ github.ref_name }}
         release_name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
-        files: client/build/app/outputs/flutter-apk/app-release.apk
+        artifacts: client/build/app/outputs/flutter-apk/app-release.apk
