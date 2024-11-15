@@ -1,18 +1,22 @@
-import 'package:client/models/product.dart';
 import 'package:client/providers/product.dart';
-import 'package:client/widgets/search/product_list.dart';
-import 'package:client/widgets/shared_app_bar.dart';
-import 'package:client/widgets/shared_bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class SearchScreen extends ConsumerWidget {
-  const SearchScreen({super.key});
+import '../models/product.dart';
+import '../widgets/search/product_list.dart';
+import '../widgets/shared_app_bar.dart';
+import '../widgets/shared_bottom_navbar.dart';
+
+class SemanticSearchScreen extends ConsumerWidget {
+  const SemanticSearchScreen({super.key, required this.productName});
+
+  final String productName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<Product>> products = ref.watch(getProductsProvider);
+    final AsyncValue<List<Product>> products =
+        ref.watch(searchProductProvider(productName));
     final TextEditingController searchController = TextEditingController();
 
     return Scaffold(
@@ -39,14 +43,17 @@ class SearchScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                    const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10)),
                     IconButton.filled(
                       icon: const Icon(Icons.search),
                       onPressed: () {
-                          final searchValue = searchController.text;
-                          if(searchValue.isNotEmpty) {
-                            context.go("/search/$searchValue");
-                          }
+                        final searchValue = searchController.text;
+                        if (searchValue.isNotEmpty) {
+                          context.go("/search/$searchValue");
+                        } else {
+                          context.go("/search");
+                        }
                       },
                     ),
                   ],
@@ -56,7 +63,10 @@ class SearchScreen extends ConsumerWidget {
               switch (products) {
                 AsyncData(:final value) => ProductList(products: value),
                 AsyncError(:final error) => Text(error.toString()),
-                _ => const Expanded(child: Center(child:  CircularProgressIndicator(),)),
+                _ => const Expanded(
+                      child: Center(
+                    child: CircularProgressIndicator(),
+                  )),
               },
             ],
           )),

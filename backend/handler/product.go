@@ -67,5 +67,5 @@ func SearchProduct(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
 	}
 
-	return c.JSON(fiber.Map{"products": products})
+	return c.JSON(products)
 }

@@ -6,6 +6,7 @@ import 'package:client/screens/recycling_categories/mixed_detailes.dart';
 import 'package:client/screens/recycling_categories/paper_details.dart';
 import 'package:client/screens/recycling_categories/plastic_details.dart';
 import 'package:client/screens/search.dart';
+import 'package:client/screens/semantic_search.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -53,6 +54,12 @@ final router = GoRouter(routes: [
       pageBuilder: (context, state) => const Placeholder()),
   getTransitionGoRoute(
       path: "/search", pageBuilder: (context, state) => const SearchScreen()),
+  getTransitionGoRoute(
+      path: "/search/:value",
+      pageBuilder: (context, state) {
+        final productName = state.pathParameters['value']!;
+        return SemanticSearchScreen(productName: productName);
+      }),
   getTransitionGoRoute(
       path: "/recycling-assistant",
       pageBuilder: (context, state) => const RecyclingAssistantScreen())
