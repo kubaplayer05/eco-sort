@@ -39,5 +39,5 @@ func GetRecyclingSuggestion(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(fiber.Map{"response": recycleSuggestions})
+	return c.JSON(recycleSuggestions)
 }

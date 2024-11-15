@@ -1,26 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product.dart';
+part of 'suggestion.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getProductsHash() => r'383edc71dbe9f128f985177db5506921c035d742';
-
-/// See also [getProducts].
-@ProviderFor(getProducts)
-final getProductsProvider = AutoDisposeFutureProvider<List<Product>>.internal(
-  getProducts,
-  name: r'getProductsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$getProductsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef GetProductsRef = AutoDisposeFutureProviderRef<List<Product>>;
-String _$searchProductHash() => r'9741329a98499aad6febfec325a6015e91de07a3';
+String _$getSuggestionsHash() => r'3f138125acb7c88a198eed1e003bf8e9a052da09';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,27 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [searchProduct].
-@ProviderFor(searchProduct)
-const searchProductProvider = SearchProductFamily();
+/// See also [getSuggestions].
+@ProviderFor(getSuggestions)
+const getSuggestionsProvider = GetSuggestionsFamily();
 
-/// See also [searchProduct].
-class SearchProductFamily extends Family<AsyncValue<List<Product>>> {
-  /// See also [searchProduct].
-  const SearchProductFamily();
+/// See also [getSuggestions].
+class GetSuggestionsFamily extends Family<AsyncValue<List<Suggestion>>> {
+  /// See also [getSuggestions].
+  const GetSuggestionsFamily();
 
-  /// See also [searchProduct].
-  SearchProductProvider call(
+  /// See also [getSuggestions].
+  GetSuggestionsProvider call(
     String productName,
   ) {
-    return SearchProductProvider(
+    return GetSuggestionsProvider(
       productName,
     );
   }
 
   @override
-  SearchProductProvider getProviderOverride(
-    covariant SearchProductProvider provider,
+  GetSuggestionsProvider getProviderOverride(
+    covariant GetSuggestionsProvider provider,
   ) {
     return call(
       provider.productName,
@@ -82,32 +68,33 @@ class SearchProductFamily extends Family<AsyncValue<List<Product>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'searchProductProvider';
+  String? get name => r'getSuggestionsProvider';
 }
 
-/// See also [searchProduct].
-class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
-  /// See also [searchProduct].
-  SearchProductProvider(
+/// See also [getSuggestions].
+class GetSuggestionsProvider
+    extends AutoDisposeFutureProvider<List<Suggestion>> {
+  /// See also [getSuggestions].
+  GetSuggestionsProvider(
     String productName,
   ) : this._internal(
-          (ref) => searchProduct(
-            ref as SearchProductRef,
+          (ref) => getSuggestions(
+            ref as GetSuggestionsRef,
             productName,
           ),
-          from: searchProductProvider,
-          name: r'searchProductProvider',
+          from: getSuggestionsProvider,
+          name: r'getSuggestionsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$searchProductHash,
-          dependencies: SearchProductFamily._dependencies,
+                  : _$getSuggestionsHash,
+          dependencies: GetSuggestionsFamily._dependencies,
           allTransitiveDependencies:
-              SearchProductFamily._allTransitiveDependencies,
+              GetSuggestionsFamily._allTransitiveDependencies,
           productName: productName,
         );
 
-  SearchProductProvider._internal(
+  GetSuggestionsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -121,12 +108,12 @@ class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
 
   @override
   Override overrideWith(
-    FutureOr<List<Product>> Function(SearchProductRef provider) create,
+    FutureOr<List<Suggestion>> Function(GetSuggestionsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SearchProductProvider._internal(
-        (ref) => create(ref as SearchProductRef),
+      override: GetSuggestionsProvider._internal(
+        (ref) => create(ref as GetSuggestionsRef),
         from: from,
         name: null,
         dependencies: null,
@@ -138,13 +125,13 @@ class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Product>> createElement() {
-    return _SearchProductProviderElement(this);
+  AutoDisposeFutureProviderElement<List<Suggestion>> createElement() {
+    return _GetSuggestionsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SearchProductProvider && other.productName == productName;
+    return other is GetSuggestionsProvider && other.productName == productName;
   }
 
   @override
@@ -156,18 +143,18 @@ class SearchProductProvider extends AutoDisposeFutureProvider<List<Product>> {
   }
 }
 
-mixin SearchProductRef on AutoDisposeFutureProviderRef<List<Product>> {
+mixin GetSuggestionsRef on AutoDisposeFutureProviderRef<List<Suggestion>> {
   /// The parameter `productName` of this provider.
   String get productName;
 }
 
-class _SearchProductProviderElement
-    extends AutoDisposeFutureProviderElement<List<Product>>
-    with SearchProductRef {
-  _SearchProductProviderElement(super.provider);
+class _GetSuggestionsProviderElement
+    extends AutoDisposeFutureProviderElement<List<Suggestion>>
+    with GetSuggestionsRef {
+  _GetSuggestionsProviderElement(super.provider);
 
   @override
-  String get productName => (origin as SearchProductProvider).productName;
+  String get productName => (origin as GetSuggestionsProvider).productName;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

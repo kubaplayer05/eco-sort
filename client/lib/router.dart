@@ -60,7 +60,11 @@ final router = GoRouter(routes: [
         final productName = state.pathParameters['value']!;
         return SemanticSearchScreen(productName: productName);
       }),
+  getTransitionGoRoute(path: "/recycling-assistant", pageBuilder: (context, state) => const RecyclingAssistantScreen()),
   getTransitionGoRoute(
-      path: "/recycling-assistant",
-      pageBuilder: (context, state) => const RecyclingAssistantScreen())
+      path: "/recycling-assistant/:productName",
+      pageBuilder: (context, state) {
+        final productName = state.pathParameters['productName'];
+        return RecyclingAssistantScreen(productName: productName);
+      })
 ]);

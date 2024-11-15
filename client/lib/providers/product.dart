@@ -8,7 +8,7 @@ part 'product.g.dart';
 
 @riverpod
 Future<List<Product>> getProducts(Ref ref) async {
-  const apiPrefix = "http://127.0.0.1:3000";
+  const apiPrefix = "https://eco-sort.bstrama.com/api";
   final url = Uri.parse("$apiPrefix/product/newest");
 
   final response = await http.get(url, headers: {
@@ -28,7 +28,7 @@ Future<List<Product>> getProducts(Ref ref) async {
 
 @riverpod
 Future<List<Product>> searchProduct(Ref ref, String productName) async {
-  const apiPrefix = "http://127.0.0.1:3000";
+  const apiPrefix = "https://eco-sort.bstrama.com/api";
   final url = Uri.parse("$apiPrefix/product/search/$productName");
 
   final response = await http.get(url, headers: {
