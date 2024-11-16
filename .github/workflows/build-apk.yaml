@@ -7,6 +7,7 @@ on:
       - test
   push:
     branches:
+      - main
       - dev
       - test
 
@@ -43,11 +44,6 @@ jobs:
        #6 Building APK
       - name: Build APK
         run: flutter build apk --release
-        working-directory: client
-
-        #7 Building App Bundle (aab)
-      - name: Build appBundle
-        run: flutter build appbundle
         working-directory: client
 
         #9 Upload Artifacts
@@ -88,6 +84,6 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "client/build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
+          artifacts: "client/build/app/outputs/flutter-apk/app-release.apk"
           tag: v${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
