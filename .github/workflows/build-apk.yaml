@@ -16,32 +16,20 @@ jobs:
     name: Build & Release 
     runs-on: ubuntu-latest 
 
+  
     steps:
-        #1 Checkout Repository
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-        #2 Setup Java
-      - name: Set Up Java
-        uses: actions/setup-java@v3.12.0
-        with:
-          distribution: 'oracle'
-          java-version: '17'
-
-        #3 Setup Flutter
-      - name: Set Up Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.4'
-          channel: 'stable'
+          flutter-version: 'stable'
 
-        #4 Install Dependencies
-      - name: Install Dependencies
+      - name: Install Flutter Dependencies
         run: flutter pub get
         working-directory: client
 
-        
-       #6 Building APK
       - name: Build APK
         run: flutter build apk --release
         working-directory: client
